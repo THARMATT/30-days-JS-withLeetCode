@@ -96,7 +96,7 @@ Simply, go to chatgpt understood problem and when I understood problem comeback 
  */
 var addTwoPromises = async function(promise1, promise2) {
     return Promise.all([promise1,promise2]).then((values=>{  //GameChanger 
-        const sum=values[0]+values[1]
+        const sum=values[0]+values[1] //const sum = values.reduce((acc, value) => acc + value);
         return sum
     }))
 };
