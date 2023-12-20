@@ -684,7 +684,7 @@ For example, let's say t = 50ms, and the function was called at 30ms, 60ms, and 
 The above diagram shows how debounce will transform events. Each rectangle represents 100ms and the debounce time is 400ms. Each color represents a different set of inputs.
 
 Please solve it without using lodash's _.debounce() function.
-
+## Pre-Requisite
 ### Why to use Debouncing?
 Have you ever encountered a situation where a function gets called multiple times within a short amount of time, leading to performance issues or unexpected behavior? This is a common problem in JavaScript, especially when working with events like scrolling, resizing, or typing.
 
@@ -701,15 +701,16 @@ Handling expensive computations or network requests that don't need to be perfor
 
 
 ## Intuition and Approach
-debounce takes two arguments: fn and t.
-fn is the function that you want to debounce.
-t is the amount of time you want to wait before executing fn after the last time it was called.
-The debounce function returns a new function that takes any number of arguments (...args).
-Within the returned function, a timer is set using setTimeout. The timer is initially set to t milliseconds.
-Every time the returned function is called, the clearTimeout function is called to reset the timer to t milliseconds.
-Once the timer has elapsed without the returned function being called again, the timer's callback function is executed. The callback function calls fn with the arguments that were passed to the returned function.
-The debounce function returns the new function that was created in step 2.
-In simpler terms, the debounce function creates a new function that can only be executed after a certain amount of time has passed without it being called again. This is achieved by creating a timer that is reset every time the debounced function is called. Once the timer has elapsed without the debounced function being called again, the function is executed. This is useful when you want to limit the frequency of some expensive operation, such as making an HTTP request or rendering a large number of elements on a page.
+- debounce takes two arguments: fn and t.
+- fn is the function that you want to debounce.
+- t is the amount of time you want to wait before executing fn after the last time it was called.
+- The debounce function returns a new function that takes any number of arguments (...args).
+- Within the returned function, a timer is set using setTimeout. The timer is initially set to t milliseconds.
+- Every time the returned function is called, the clearTimeout function is called to reset the timer to t milliseconds.
+- Once the timer has elapsed without the returned function being called again, the timer's callback function is executed. The callback function calls fn with the arguments that were passed to the returned function.
+- The debounce function returns the new function that was created in step 2.
+- In simpler terms, the debounce function creates a new function that can only be executed after a certain amount of time has passed without it being called again. 
+- This is achieved by creating a timer that is reset every time the debounced function is called. Once the timer has elapsed without the debounced function being called again, the function is executed. This is useful when you want to limit the frequency of some expensive operation, such as making an HTTP request or rendering a large number of elements on a page.
 
 
 ## Complexity
