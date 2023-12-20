@@ -606,10 +606,10 @@ set(key, value, duration): accepts an integer key, an integer value, and a durat
 get(key): if an un-expired key exists, it should return the associated value. Otherwise it should return -1.
 
 count(): returns the count of un-expired keys.
-# Intuition
+### Intuition
 The problem involves implementing a time-limited cache, where each key-value pair has an associated expiration time. The goal is to manage the cache in such a way that when setting a key-value pair, any existing key with the same value gets its expiration reset, and the function returns whether the key was already present. Additionally, the cache should be able to retrieve values by key and provide a count of non-expired keys.
 
-# Approach
+### Approach
 The implementation uses a JavaScript class called TimeLimitedCache with three main methods:
 
 set(key, value, duration): Sets a key-value pair with a specified expiration duration. If the key already exists, its expiration is reset, and the function returns true, indicating that the key was already present.
@@ -619,14 +619,14 @@ The cache uses a Map to store key-value pairs along with their associated expira
 
 
 
-# Complexity
+### Complexity
 - Time complexity:O(1)
 
 
 - Space complexity:O(n)
 
 
-# Code
+## Code
 ``` javascript
 var TimeLimitedCache = function() {
     this.cache=new Map()
@@ -671,5 +671,74 @@ TimeLimitedCache.prototype.count = function() {
  * timeLimitedCache.set(1, 42, 1000); // false
  * timeLimitedCache.get(1) // 42
  * timeLimitedCache.count() // 1
+ */
+```
+# 2627. Debounce
+
+Given a function fn and a time in milliseconds t, return a debounced version of that function.
+
+A debounced function is a function whose execution is delayed by t milliseconds and whose execution is cancelled if it is called again within that window of time. The debounced function should also receive the passed parameters.
+
+For example, let's say t = 50ms, and the function was called at 30ms, 60ms, and 100ms. The first 2 function calls would be cancelled, and the 3rd function call would be executed at 150ms. If instead t = 35ms, The 1st call would be cancelled, the 2nd would be executed at 95ms, and the 3rd would be executed at 135ms.
+
+The above diagram shows how debounce will transform events. Each rectangle represents 100ms and the debounce time is 400ms. Each color represents a different set of inputs.
+
+Please solve it without using lodash's _.debounce() function.
+
+### Why to use Debouncing?
+Have you ever encountered a situation where a function gets called multiple times within a short amount of time, leading to performance issues or unexpected behavior? This is a common problem in JavaScript, especially when working with events like scrolling, resizing, or typing.
+
+Fortunately, there's a simple technique called "debouncing" that can help you control the frequency of function calls and avoid these issues.
+
+### What is Debouncing?
+Debouncing is a method that limits the rate at which a function gets called. It works by delaying the execution of a function until a certain amount of time has passed without any additional function calls. If another function call happens within this time frame, the timer resets and the function execution is delayed again.
+
+Debouncing is useful in situations where you want to prevent a function from being called too frequently, such as:
+
+Handling user input events like keypresses, mouse movements, or button clicks
+
+Handling expensive computations or network requests that don't need to be performed on every function call
+
+
+## Intuition and Approach
+debounce takes two arguments: fn and t.
+fn is the function that you want to debounce.
+t is the amount of time you want to wait before executing fn after the last time it was called.
+The debounce function returns a new function that takes any number of arguments (...args).
+Within the returned function, a timer is set using setTimeout. The timer is initially set to t milliseconds.
+Every time the returned function is called, the clearTimeout function is called to reset the timer to t milliseconds.
+Once the timer has elapsed without the returned function being called again, the timer's callback function is executed. The callback function calls fn with the arguments that were passed to the returned function.
+The debounce function returns the new function that was created in step 2.
+In simpler terms, the debounce function creates a new function that can only be executed after a certain amount of time has passed without it being called again. This is achieved by creating a timer that is reset every time the debounced function is called. Once the timer has elapsed without the debounced function being called again, the function is executed. This is useful when you want to limit the frequency of some expensive operation, such as making an HTTP request or rendering a large number of elements on a page.
+
+
+## Complexity
+- Time complexity:O(1)
+
+
+- Space complexity:O(1)
+
+# Code
+```javascript
+/**
+ * @param {Function} fn
+ * @param {number} t milliseconds
+ * @return {Function}
+ */
+var debounce = function(fn, t) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer)
+        timer=setTimeout(() => {
+      fn.apply(this, args);
+    }, t);
+    }
+};
+
+/**
+ * const log = debounce(console.log, 100);
+ * log('Hello'); // cancelled
+ * log('Hello'); // cancelled
+ * log('Hello'); // Logged at t=100ms
  */
 ```
