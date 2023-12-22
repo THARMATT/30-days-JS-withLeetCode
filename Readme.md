@@ -743,3 +743,146 @@ var debounce = function(fn, t) {
  * log('Hello'); // Logged at t=100ms
  */
 ```
+
+# 2721. Execute Asynchronous Functions in Parallel
+Given an array of asynchronous functions functions, return a new promise promise. Each function in the array accepts no arguments and returns a promise. All the promises should be executed in parallel.
+
+promise resolves:
+
+When all the promises returned from functions were resolved successfully in parallel. The resolved value of promise should be an array of all the resolved values of promises in the same order as they were in the functions. The promise should resolve when all the asynchronous functions in the array have completed execution in parallel.
+promise rejects:
+
+When any of the promises returned from functions were rejected. promise should also reject with the reason of the first rejection.
+Please solve it without using the built-in Promise.all function.
+
+## Code
+```javascript
+/**
+ * @param {Array<Function>} functions
+ * @return {Promise<any>}
+ */
+var promiseAll = function(functions) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    let resolvedCount = 0;
+    let rejected = false;
+
+    for (let i = 0; i < functions.length; i++) {
+      functions[i]()
+        .then(result => {
+          if (!rejected) {
+            results[i] = result;
+            resolvedCount++;
+
+            if (resolvedCount === functions.length) {
+              resolve(results);
+            }
+          }
+        })
+        .catch(error => {
+          if (!rejected) {
+            rejected = true;
+            reject(error);
+          }
+        });
+    }
+  });
+};
+
+/**
+ * const promise = promiseAll([() => new Promise(res => res(42))])
+ * promise.then(console.log); // [42]
+ */
+
+ ```
+
+ # 2727. Is Object Empty
+ Given an object or an array, return if it is empty.
+
+An empty object contains no key-value pairs.
+An empty array contains no elements.
+You may assume the object or array is the output of JSON.parse.
+
+## Pre-Requisite
+The `Object.keys(obj)` method in JavaScript is used to extract the keys (property names) of a given object `obj` and return them as an array. Here's a more detailed explanation:
+
+### Syntax:
+
+```javascript
+const keysArray = Object.keys(obj);
+```
+
+### Parameters:
+
+- `obj`: The object whose enumerable properties (keys) are to be returned.
+
+### Return Value:
+
+- An array of strings representing the keys of the object.
+
+### Example:
+
+```javascript
+const myObject = {
+    name: 'John',
+    age: 30,
+    isStudent: false
+};
+
+const keysArray = Object.keys(myObject);
+console.log(keysArray);
+```
+
+In this example, `keysArray` will be `['name', 'age', 'isStudent']`.
+
+### Notes:
+
+1. **Enumerable Properties:**
+   - `Object.keys()` returns only the enumerable properties of the object. Enumerable properties are those properties whose `enumerable` attribute is set to `true`. By default, most built-in properties are enumerable.
+
+2. **Order of Keys:**
+   - The order of the keys in the resulting array is not guaranteed to be the same as the order in which they were added to the object. In practice, it often reflects the order in which the properties were added, but this behavior is not standardized.
+
+3. **Non-enumerable Properties:**
+   - If an object has non-enumerable properties or properties with the `enumerable` attribute set to `false`, those properties will not be included in the array returned by `Object.keys()`.
+
+### Use Cases:
+
+1. **Checking if an Object is Empty:**
+   ```javascript
+   if (Object.keys(myObject).length === 0) {
+       console.log('The object is empty.');
+   } else {
+       console.log('The object is not empty.');
+   }
+   ```
+
+2. **Iterating Over Object Properties:**
+   ```javascript
+   const keysArray = Object.keys(myObject);
+   for (const key of keysArray) {
+       console.log(`${key}: ${myObject[key]}`);
+   }
+   ```
+
+3. **Converting Object to Array of Values:**
+   ```javascript
+   const valuesArray = Object.keys(myObject).map(key => myObject[key]);
+   ```
+
+`Object.keys()` is a versatile method commonly used in JavaScript for various tasks related to working with objects and their properties. It provides a way to access and manipulate the keys of an object in a straightforward manner.
+## Code
+```javascript
+/**
+ * @param {Object|Array} obj
+ * @return {boolean}
+ */
+var isEmpty = function(obj) {
+    if(Object.keys(obj).length===0){//this method is solution
+        return true
+    }
+    else{
+        return false
+    }
+};
+```
