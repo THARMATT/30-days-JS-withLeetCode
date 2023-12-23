@@ -886,3 +886,129 @@ var isEmpty = function(obj) {
     }
 };
 ```
+# 2677. Chunk Array
+Given an array arr and a chunk size size, return a chunked array. A chunked array contains the original elements in arr, but consists of subarrays each of length size. The length of the last subarray may be less than size if arr.length is not evenly divisible by size.
+
+You may assume the array is the output of JSON.parse. In other words, it is valid JSON.
+
+Please solve it without using lodash's _.chunk function.
+## Pre-Requisite
+
+
+### JavaScript Array Methods:
+
+1. **`push(element)`**:
+   - Adds one or more elements to the end of an array.
+
+    ```javascript
+    let fruits = ['apple', 'banana'];
+    fruits.push('orange');
+    // fruits is now ['apple', 'banana', 'orange']
+    ```
+
+2. **`pop()`**:
+   - Removes the last element from an array and returns that element.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange'];
+    let lastFruit = fruits.pop();
+    // lastFruit is 'orange', fruits is now ['apple', 'banana']
+    ```
+
+3. **`shift()`**:
+   - Removes the first element from an array and returns that element.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange'];
+    let firstFruit = fruits.shift();
+    // firstFruit is 'apple', fruits is now ['banana', 'orange']
+    ```
+
+4. **`unshift(element)`**:
+   - Adds one or more elements to the beginning of an array.
+
+    ```javascript
+    let fruits = ['banana', 'orange'];
+    fruits.unshift('apple');
+    // fruits is now ['apple', 'banana', 'orange']
+    ```
+
+5. **`indexOf(element)`**:
+   - Returns the first index at which a given element is found in the array. If the element is not present, it returns -1.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange'];
+    let index = fruits.indexOf('banana');
+    // index is 1
+    ```
+
+6. **`slice(start, end)`**:
+   - Returns a shallow copy of a portion of an array specified by start and end indices.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange', 'kiwi'];
+    let subset = fruits.slice(1, 3);
+    // subset is ['banana', 'orange']
+    ```
+
+7. **`splice(start, deleteCount, item1, item2, ...)`**:
+   - Changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange'];
+    fruits.splice(1, 1, 'kiwi');
+    // fruits is now ['apple', 'kiwi', 'orange']
+    ```
+
+8. **`forEach(callback)`**:
+   - Executes a provided function once for each array element.
+
+    ```javascript
+    let fruits = ['apple', 'banana', 'orange'];
+    fruits.forEach(fruit => console.log(fruit));
+    // Outputs:
+    // apple
+    // banana
+    // orange
+    ```
+
+9. **`map(callback)`**:
+   - Creates a new array with the results of calling a provided function on every element in the array.
+
+    ```javascript
+    let numbers = [1, 2, 3];
+    let squared = numbers.map(num => num * num);
+    // squared is [1, 4, 9]
+    ```
+
+10. **`filter(callback)`**:
+   - Creates a new array with all elements that pass the test implemented by the provided function.
+
+    ```javascript
+    let numbers = [1, 2, 3, 4, 5];
+    let evens = numbers.filter(num => num % 2 === 0);
+    // evens is [2, 4]
+    ```
+#### Time Complexity: O(n * size)
+#### Space Complexity: O(n)
+
+Code
+```javascript
+
+/**
+ * @param {Array} arr
+ * @param {number} size
+ * @return {Array}
+ */
+var chunk = function(arr, size) {
+    // if(arr.length==0){
+    //     return [] 
+    // }
+    const chunkArray=[]
+    for(let i=0;i<arr.length;i+=size){
+        const chunk=arr.slice(i,i+size)
+        chunkArray.push(chunk)
+    }
+    return chunkArray
+};
+```
