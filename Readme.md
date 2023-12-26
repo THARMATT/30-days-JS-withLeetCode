@@ -1036,4 +1036,72 @@ Array.prototype.last = function(arr) {
    }
 };
 ```
+# 2724. Sort By
+
+Given an array arr and a function `(fn)`, return a sorted array sortedArr. You can assume fn only returns numbers and those numbers determine the sort order of sortedArr. sortedArray must be sorted in ascending order by `(fn)` output.
+
+You may assume that fn will never duplicate numbers for a given array.
+
+
+### Approach
+Utilize JavaScript's `Array.sort()` method with a custom comparator function. The comparator function calls `fn` on array elements (`a` and `b`) to extract sortable values. The subtraction or comparison result determines the sort order.
+
+### Implementation
+
+#### Implementation 1: Subtraction-Based Comparator
+
+```javascript
+function sortBy(arr, fn) {
+    arr.sort((a, b) => fn(a) - fn(b));
+    return arr;
+}
+```
+
+#### Implementation 2: Comparison-Based Comparator
+
+```javascript
+function sortBy(arr, fn) {
+    arr.sort((a, b) => fn(a) < fn(b) ? -1 : 1);
+    return arr;
+}
+```
+
+### Examples
+
+1. Sorting numbers in ascending order:
+
+```javascript
+let numbers = [40, 1, 5, 200];
+sortBy(numbers, num => num);
+// Result: [1, 5, 40, 200]
+```
+
+2. Sorting objects based on a specific key:
+
+```javascript
+let objects = [{ x: 3 }, { x: 1 }, { x: 2 }];
+sortBy(objects, obj => obj.x);
+// Result: [{ x: 1 }, { x: 2 }, { x: 3 }]
+```
+
+3. Sorting arrays based on the second element:
+
+```javascript
+let arrays = [[3, 1], [1, 2], [2, 3]];
+sortBy(arrays, arr => arr[1]);
+// Result: [[3, 1], [1, 2], [2, 3]]
+```
+
+### Complexity
+
+- Time Complexity: O(NlogN)
+- Space Complexity: O(N)
+
+### Interview Tips
+
+- Understand the purpose of `Array.sort()` and how a comparator function works.
+- Familiarize yourself with sorting objects based on specific properties.
+- Consider the use of `String.prototype.localeCompare()` for locale-sensitive sorting.
+- Practice sorting numbers in descending order using `Array.sort()`.
+
 
