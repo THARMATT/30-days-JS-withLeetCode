@@ -1105,3 +1105,142 @@ sortBy(arrays, arr => arr[1]);
 - Practice sorting numbers in descending order using `Array.sort()`.
 
 
+
+# 2722. Join Two Arrays by ID
+
+Given two arrays arr1 and arr2, return a new array joinedArray. All the objects in each of the two inputs arrays will contain an id field that has an integer value. joinedArray is an array formed by merging arr1 and arr2 based on their id key. The length of joinedArray should be the length of unique values of id. The returned array should be sorted in ascending order based on the id key.
+
+If a given id exists in one array but not the other, the single object with that id should be included in the result array without modification.
+
+If two objects share an id, their properties should be merged into a single object:
+
+If a key only exists in one object, that single key-value pair should be included in the object.
+If a key is included in both objects, the value in the object from arr2 should override the value from arr1.
+
+Certainly! Below are the implementations for all three approaches along with a short article explaining the importance of merging arrays based on a common key in programming.
+
+## Approach 1: Brute Force
+
+```javascript
+function mergeArraysBruteForce(arr1, arr2) {
+  // Combine arrays
+  const combinedArray = [...arr1, ...arr2];
+
+  // Initialize merged object
+  const merged = {};
+
+  // Merge objects based on ID
+  combinedArray.forEach(obj => {
+    const id = obj.id;
+    if (!merged[id]) {
+      merged[id] = { ...obj };
+    } else {
+      merged[id] = { ...merged[id], ...obj };
+    }
+  });
+
+  // Extract values from merged object
+  const joinedArray = Object.values(merged);
+
+  // Sort by ID in ascending order
+  joinedArray.sort((a, b) => a.id - b.id);
+
+  return joinedArray;
+}
+```
+
+## Approach 2: Using Map
+
+```javascript
+function mergeArraysUsingMap(arr1, arr2) {
+  const map = new Map();
+
+  // Add objects from arr1 to map
+  for (const obj of arr1) {
+    map.set(obj.id, { ...obj });
+  }
+
+  // Merge objects from arr2 based on ID
+  for (const obj of arr2) {
+    const id = obj.id;
+    if (map.has(id)) {
+      const existingObj = map.get(id);
+      for (const key of Object.keys(obj)) {
+        existingObj[key] = obj[key];
+      }
+    } else {
+      map.set(id, { ...obj });
+    }
+  }
+
+  // Extract values from map and sort by ID
+  const joinedArray = [...map.values()].sort((a, b) => a.id - b.id);
+
+  return joinedArray;
+}
+```
+
+## Approach 3: Using Two Pointers
+
+```javascript
+function mergeArraysUsingPointers(arr1, arr2) {
+  // Sort arrays in ascending order based on ID
+  arr1.sort((a, b) => a.id - b.id);
+  arr2.sort((a, b) => a.id - b.id);
+
+  // Initialize pointers and result array
+  let i = 0, j = 0;
+  const joinedArray = [];
+
+  // Merge based on ID
+  while (i < arr1.length && j < arr2.length) {
+    if (arr1[i].id < arr2[j].id) {
+      joinedArray.push({ ...arr1[i] });
+      i++;
+    } else if (arr1[i].id > arr2[j].id) {
+      joinedArray.push({ ...arr2[j] });
+      j++;
+    } else {
+      // Merge properties if IDs are equal
+      joinedArray.push({ ...arr1[i], ...arr2[j] });
+      i++;
+      j++;
+    }
+  }
+
+  // Add remaining objects from arr1
+  while (i < arr1.length) {
+    joinedArray.push({ ...arr1[i] });
+    i++;
+  }
+
+  // Add remaining objects from arr2
+  while (j < arr2.length) {
+    joinedArray.push({ ...arr2[j] });
+    j++;
+  }
+
+  return joinedArray;
+}
+```
+
+##  Merging Arrays Based on a Common Key in Programming
+
+In various programming scenarios, merging arrays based on a common key proves to be a crucial operation, offering a versatile solution across diverse domains. Whether handling data integration, social media analysis, geographic information systems (GIS), or supply chain management, this approach allows programmers to consolidate information, establish relationships, and enhance data processing.
+
+**Data Integration:**
+When dealing with multiple data sources, each providing information in separate arrays with a shared identifier, merging based on this identifier is indispensable. It enables the creation of a unified dataset, facilitating seamless analysis and processing.
+
+**Social Media Analysis:**
+In social media analysis, merging arrays based on user or post IDs proves invaluable. This facilitates the comprehensive analysis of user profiles, comments, likes, and shares, empowering analysts to identify popular posts and uncover patterns in user behavior.
+
+**Geographic Information Systems (GIS):**
+For GIS applications, merging arrays based on location IDs or geographic identifiers is fundamental. This integration allows for the consolidation of spatial data, combining features, attributes, and relevant information to support spatial analysis and decision-making.
+
+ **Supply Chain Management:**
+In supply chain systems, merging arrays based on unique identifiers such as product codes or order IDs is instrumental. It enables the tracking and management of the flow of goods or services, consolidating information from different stages of the supply chain for efficient monitoring and optimization.
+
+### **Approach Variations:**
+The presented approaches—brute force, map-based, and two-pointer—are tailored to different scenarios and preferences. The brute force method combines arrays and iteratively merges objects, while the map-based approach efficiently utilizes a data structure. The two-pointer technique, reminiscent of merging sorted arrays, proves effective in scenarios where sorting is acceptable.
+
+
