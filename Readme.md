@@ -1244,3 +1244,49 @@ In supply chain systems, merging arrays based on unique identifiers such as prod
 The presented approaches—brute force, map-based, and two-pointer—are tailored to different scenarios and preferences. The brute force method combines arrays and iteratively merges objects, while the map-based approach efficiently utilizes a data structure. The two-pointer technique, reminiscent of merging sorted arrays, proves effective in scenarios where sorting is acceptable.
 
 
+# 2625. Flatten Deeply Nested Array
+
+Given a multi-dimensional array arr and a depth n, return a flattened version of that array.
+
+A multi-dimensional array is a recursive data structure that contains integers or other multi-dimensional arrays.
+
+A flattened array is a version of that array with some or all of the sub-arrays removed and replaced with the actual elements in that sub-array. This flattening operation should only be done if the current depth of nesting is less than n. The depth of the elements in the first array are considered to be 0.
+
+Please solve it without the built-in Array.flat method.
+### Intuition
+The code appears to be a recursive solution to flatten a multi-dimensional array up to a specified depth. It uses a helper function named `helper` to traverse the input array recursively. The base case checks whether an element is an object (array) and if the current depth is less than the specified depth (`n`). If the conditions are met, it continues to flatten the subarray; otherwise, it appends the element to the result.
+
+### Approach
+1. The `flat` function initializes an empty array `res` to store the flattened result.
+2. The `helper` function is defined inside `flat`, which takes an array (`arr`) and the current depth (`depth`) as parameters.
+3. The `helper` function iterates through each element of the array.
+   - If the element is an object (array) and the current depth is less than `n`, it calls itself recursively with the subarray and an incremented depth.
+   - If the conditions are not met, it appends the element to the `res` array.
+4. The `helper` function returns the final flattened result.
+
+### Complexity
+- Time complexity: The time complexity of the code is determined by the number of elements in the input array. In the worst case, each element needs to be visited, resulting in a time complexity of O(N), where N is the total number of elements in the array.
+- Space complexity: The space complexity is also influenced by the input array. The recursion depth is limited by the depth of the array, and the space required for the result array. In the worst case, the space complexity is O(N), where N is the total number of elements in the array.
+## Code
+```javascript
+/**
+ * @param {Array} arr
+ * @param {number} depth
+ * @return {Array}
+ */
+var flat = function (arr, n) {
+   let res=[]
+   function helper(arr,depth){
+       for(const val of arr){
+           if(typeof val==='object' && depth<n){
+               helper(val,depth+1)
+           }
+           else{
+               res.push(val)
+           }
+       }
+    return res
+   } 
+   return helper(arr,0)
+};
+```
