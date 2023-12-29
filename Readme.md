@@ -1270,23 +1270,95 @@ The code appears to be a recursive solution to flatten a multi-dimensional array
 ## Code
 ```javascript
 /**
- * @param {Array} arr
- * @param {number} depth
- * @return {Array}
+ * @param {Array} arr - The input array to be flattened.
+ * @param {number} n - The depth up to which the array should be flattened.
+ * @return {Array} - The flattened array.
  */
 var flat = function (arr, n) {
-   let res=[]
-   function helper(arr,depth){
-       for(const val of arr){
-           if(typeof val==='object' && depth<n){
-               helper(val,depth+1)
-           }
-           else{
-               res.push(val)
-           }
-       }
-    return res
-   } 
-   return helper(arr,0)
+    // Initialize an empty array to store the flattened result.
+    let res = [];
+
+    // Helper function to recursively flatten the array.
+    function helper(arr, depth) {
+        // Iterate through each element of the array.
+        for (const val of arr) {
+            // Check if the element is an object (array) and the depth is less than the specified depth (n).
+            if (typeof val === 'object' && depth < n) {
+                // If conditions are met, recursively call the helper function with the subarray and an incremented depth.
+                helper(val, depth + 1);
+            } else {
+                // If conditions are not met, append the element to the result array.
+                res.push(val);
+            }
+        }
+    }
+
+    // Call the helper function with the initial array and depth of 0.
+    helper(arr, 0);
+
+    // Return the final flattened result.
+    return res;
 };
+
 ```
+
+# 2705. Compact Object
+Given an object or array obj, return a compact object. A compact object is the same as the original object, except with keys containing falsy values removed. This operation applies to the object and any nested objects. Arrays are considered objects where the indices are keys. A value is considered falsy when Boolean(value) returns false.
+
+You may assume the obj is the output of JSON.parse. In other words, it is valid JSON.
+## **Intuition and Approach:**
+
+The `compactObject` function is designed to simplify and condense an input object by removing keys with falsy values, handling nested structures as well. Here's an intuitive breakdown:
+
+1. **Base Cases:**
+   - If the object is `null`, return `null`.
+   - If the object is an array, filter out falsy values and recursively compact each element.
+   - If the object is not an iterable (neither an object nor an array), return it as is.
+
+2. **Iterative Case:**
+   - If the object is an iterable (object with keys), iterate through its keys.
+   - For each key, apply `compactObject` recursively to its corresponding value.
+   - If the value is truthy, include the key-value pair in a new compacted object.
+
+3. **Return Result:**
+   - Return the final compacted object.
+
+**Time Complexity:**
+   - The time complexity is O(n), where n is the number of keys in the input object. The iteration through the keys contributes to the linear time complexity.
+
+**Space Complexity:**
+   - The space complexity is O(m), where m is the size of the compacted object. The main factor is the space required for the new compacted object.
+
+ ```javascript       
+   // Define a function named compactObject, which takes an object 'obj' as a parameter
+var compactObject = function(obj) {
+    // Step 1: Check if 'obj' is null
+    if (obj === null) return null;
+
+    // Step 2: Check if 'obj' is an array, filter out falsy values, and map each element by calling compactObject recursively
+    if (Array.isArray(obj)) return obj.filter(Boolean).map(compactObject);
+
+    // Step 3: Check if 'obj' is not an object, return 'obj' as is
+    if (typeof obj !== "object") return obj;
+
+    // If 'obj' is an iterable object, compact its keys and values
+    const compacted = {};
+    // Step 4: Iterate through each key in the iterable object 'obj'
+    for (const key in obj) {
+        // Step 5: Recursively call compactObject on the value of the current key
+        let value = compactObject(obj[key]);
+        // Check if the value is truthy (not null, undefined, or false)
+        if (value) {
+            // If true, add the key-value pair to the 'compacted' object
+            compacted[key] = value;
+        }
+    }
+
+    // Return the 'compacted' object
+    return compacted;
+};
+
+```
+
+   
+  
