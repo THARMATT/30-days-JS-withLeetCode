@@ -1359,6 +1359,76 @@ var compactObject = function(obj) {
 };
 
 ```
+# 2694. Event Emitter
+Design an EventEmitter class. This interface is similar (but with some differences) to the one found in Node.js or the Event Target interface of the DOM. The EventEmitter should allow for subscribing to events and emitting them.
 
-   
+Your EventEmitter class should have the following two methods:
+
+subscribe - This method takes in two arguments: the name of an event as a string and a callback function. This callback function will later be called when the event is emitted.
+An event should be able to have multiple listeners for the same event. When emitting an event with multiple callbacks, each should be called in the order in which they were subscribed. An array of results should be returned. You can assume no callbacks passed to subscribe are referentially identical.
+The subscribe method should also return an object with an unsubscribe method that enables the user to unsubscribe. When it is called, the callback should be removed from the list of subscriptions and undefined should be returned.
+emit - This method takes in two arguments: the name of an event as a string and an optional array of arguments that will be passed to the callback(s). If there are no callbacks subscribed to the given event, return an empty array. Otherwise, return an array of the results of all callback calls in the order they were subscribed.
+
+```javascript
+class EventEmitter {
+    // Object to store events and their associated callbacks
+    eventMap = {};
+
+    // Method to subscribe to an event
+    subscribe(event, cb) {
+        // If the event doesn't exist in the eventMap, create an empty Set
+        if (!this.eventMap.hasOwnProperty(event)) {
+            this.eventMap[event] = new Set();
+        }
+
+        // Add the callback to the Set of callbacks for this event
+        this.eventMap[event].add(cb);
+
+        // Return an object with the unsubscribe method
+        return {
+            unsubscribe: () => {
+                // Remove the callback from the Set when unsubscribed
+                this.eventMap[event].delete(cb);
+            },
+        };
+    }
+
+    // Method to emit an event
+    emit(event, args = []) {
+        let res = [];
+
+        // Iterate over each callback in the Set for the given event
+        // If the event doesn't exist, use an empty array
+        (this.eventMap[event] ?? []).forEach((cb) => {
+            // Call each callback with the provided arguments
+            res.push(cb(...args));
+        });
+
+        // Return the array of results
+        return res;
+    }
+}
+```
+
+### Approach:
+
+1. **subscribe:**
+   - A `subscribe` method is implemented to add callbacks to a Set associated with a particular event in the `eventMap`.
+   - If the event doesn't exist, a new Set is created for that event.
+   - The `subscribe` method returns an object with an `unsubscribe` method, allowing removal of the callback.
+
+2. **emit:**
+   - An `emit` method is implemented to trigger callbacks associated with a particular event.
+   - It iterates over each callback in the Set for the given event (or an empty array if the event doesn't exist) and calls the callbacks with the provided arguments.
+   - The results of the callbacks are stored in an array and returned.
+
+### Complexities:
+
+- **Subscribe:**
+  - Time Complexity: O(1) - Adding a callback to a Set has constant time complexity.
+  - Space Complexity: O(N) - N is the number of unique events. Each event has its own Set of callbacks.
+
+- **Emit:**
+  - Time Complexity: O(K) - K is the number of callbacks for the specific event. It depends on the number of subscribed callbacks for the given event.
+  - Space Complexity: O(1) - The space required for the results array.  
   
