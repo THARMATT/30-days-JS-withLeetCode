@@ -1430,5 +1430,65 @@ class EventEmitter {
 
 - **Emit:**
   - Time Complexity: O(K) - K is the number of callbacks for the specific event. It depends on the number of subscribed callbacks for the given event.
-  - Space Complexity: O(1) - The space required for the results array.  
+  - Space Complexity: O(1) - The space required for the results array. 
+
+
+
+# 2695. Array Wrapper
+
+Create a class ArrayWrapper that accepts an array of integers in its constructor. This class should have two features:
+
+When two instances of this class are added together with the + operator, the resulting value is the sum of all the elements in both arrays.
+When the String() function is called on the instance, it will return a comma separated string surrounded by brackets. For example, [1,2,3].
+ 
+
+
+  ### Intuition:
+- The `ArrayWrapper` is a simple wrapper for an array.
+- `valueOf` provides a way to get the sum of its elements.
+- `toString` gives a string representation of the array.
+
+### Approach:
+1. **Constructor Function:**
+   - Define a function called `ArrayWrapper` that takes an array as input.
+   - Set up an instance variable to store the input array.
+
+2. **Custom `valueOf` Method:**
+   - Add a method named `valueOf` to the prototype.
+   - Use the `reduce` method to calculate the sum of all elements in the array.
+
+3. **Custom `toString` Method:**
+   - Add a method named `toString` to the prototype.
+   - Convert the array to a string, wrapped in square brackets.
+
+
+
+### Space Complexity:
+- The space complexity is relatively low.
+- It mainly uses space to store the input array in the instance variable.
+
+### Time Complexity:
+- The time complexity for the `valueOf` method is O(n), where n is the length of the array.
+- The time complexity for the `toString` method is O(n), where n is the length of the array.
+
+```javascript
+
+// Define a constructor function called ArrayWrapper that takes an array 'nums' as a parameter.
+var ArrayWrapper = function(nums) {
+    // Initialize an instance variable 'nums' to store the array.
+    this.nums = nums;
+};
+
+// Add a custom 'valueOf' method to the prototype of ArrayWrapper.
+ArrayWrapper.prototype.valueOf = function() {
+    // Use the 'reduce' method to sum all elements in the 'nums' array and return the result.
+    return this.nums.reduce((n, a) => n + a, 0);
+};
+
+// Add a custom 'toString' method to the prototype of ArrayWrapper.
+ArrayWrapper.prototype.toString = function() {
+    // Convert the 'nums' array to a string and wrap it with square brackets.
+    return `[${String(this.nums)}]`;
+};
+```
   
